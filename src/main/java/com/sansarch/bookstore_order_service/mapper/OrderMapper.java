@@ -1,5 +1,6 @@
 package com.sansarch.bookstore_order_service.mapper;
 
+import com.sansarch.bookstore_order_service.dto.BookDataDto;
 import com.sansarch.bookstore_order_service.dto.PlaceOrderDtoBook;
 import com.sansarch.bookstore_order_service.dto.PlaceOrderOutputDto;
 import com.sansarch.bookstore_order_service.entity.Order;
@@ -16,7 +17,7 @@ public interface OrderMapper {
     @Mapping(target = "orderId", source = "id")
     PlaceOrderOutputDto orderEntityToPlaceOrderOutputDto(Order order);
 
-    @Mapping(target = "bookId", source = "bookId")
-    @Mapping(target = "quantity", source = "quantity")
-    OrderItem placeOrderDtoBookToOrderItemEntity(PlaceOrderDtoBook dto);
+    @Mapping(target = "bookId", source = "id")
+    @Mapping(target = "bookTitle", source = "title")
+    OrderItem bookDataDtoToOrderItemEntity(BookDataDto dto);
 }
