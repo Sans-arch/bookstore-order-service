@@ -11,6 +11,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class PlaceOrderOutputDtoBook {
     private Long bookId;
-    private Long quantity;
+    private Integer quantity;
     private BigDecimal price;
 }

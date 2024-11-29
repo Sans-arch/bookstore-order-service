@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.clients.dto;
+package com.sansarch.bookstore_order_service.http.clients.catalog.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,5 +16,5 @@ public class CatalogBookDto {
     private String title;
     private String author;
     private BigDecimal price;
-    private Long stockAvailability;
+    private Integer stockAvailability;
 }

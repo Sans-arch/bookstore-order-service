@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PlaceOrderInputDtoBook {
+public class DeductStockDto {
     private Long bookId;
     private Integer quantity;
 }

@@ -36,13 +36,19 @@ public class Order {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<OrderItem> items = new ArrayList<>();
+    private List<OrderItem> items;
 
-    public void addItem(OrderItem item) {
-        if (items == null) {
-            items = new ArrayList<>();
+    public void addItems(List<OrderItem> items) {
+        if (this.items == null) {
+            this.items = new ArrayList<>();
         }
-        items.add(item);
-        item.setOrder(this);
+        this.items.addAll(items);
+        items.forEach(item -> item.setOrder(this));
+    }
+
+    public void calculateTotalPrice() {
+        totalPrice = items.stream()
+                .map(OrderItem::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.controller;
+package com.sansarch.bookstore_order_service.http.controller;
 
 import com.sansarch.bookstore_order_service.dto.PlaceOrderInputDto;
 import com.sansarch.bookstore_order_service.dto.PlaceOrderOutputDto;
