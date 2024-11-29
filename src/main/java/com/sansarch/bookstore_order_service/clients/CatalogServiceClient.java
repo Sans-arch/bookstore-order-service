@@ -1,6 +1,6 @@
 package com.sansarch.bookstore_order_service.clients;
 
-import com.sansarch.bookstore_order_service.dto.BookDataDto;
+import com.sansarch.bookstore_order_service.clients.dto.CatalogBookDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CatalogServiceClient {
 
     @GetMapping("/{id}")
-    ResponseEntity<BookDataDto> getBookData(@PathVariable Long id);
+    ResponseEntity<CatalogBookDto> getBookData(@PathVariable Long id);
 }

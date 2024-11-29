@@ -1,6 +1,7 @@
 package com.sansarch.bookstore_order_service.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +10,12 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 public class PlaceOrderOutputDto {
 
     private Long orderId;
     private String status;
     private BigDecimal totalPrice;
-    private List<PlaceOrderDtoBook> items;
+    private List<PlaceOrderOutputDtoBook> items;
 }
