@@ -17,8 +17,13 @@ The **Order Service** is a core microservice in the Online Bookstore system resp
 - **Java**: Programming language.
 - **Spring Boot**: Framework for building the RESTful service.
 - **Spring Data JPA**: For database interactions.
+- **Spring Web**: For building RESTful APIs.
 - **PostgreSQL**: Database for storing orders and order items.
 - **Maven**: Dependency and build management.
+- **MapStruct**: For mapping between entities and DTOs.
+- **Lombok**: For reducing boilerplate code.
+- **GitHub Actions**: For CI/CD pipeline.
+- **Feign Client**: For communicating with other services.
 
 ---
 
