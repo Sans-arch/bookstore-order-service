@@ -35,7 +35,8 @@ public class Order {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "order_id")
     private List<OrderItem> items;
 
     public void addItems(List<OrderItem> items) {
@@ -43,7 +44,6 @@ public class Order {
             this.items = new ArrayList<>();
         }
         this.items.addAll(items);
-        items.forEach(item -> item.setOrder(this));
     }
 
     public void calculateTotalPrice() {

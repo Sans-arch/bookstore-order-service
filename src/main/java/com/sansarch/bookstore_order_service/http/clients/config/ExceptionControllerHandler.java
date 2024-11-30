@@ -1,6 +1,7 @@
 package com.sansarch.bookstore_order_service.http.clients.config;
 
 import com.sansarch.bookstore_order_service.exception.BookNotFoundException;
+import com.sansarch.bookstore_order_service.exception.OrderNotFoundException;
 import com.sansarch.bookstore_order_service.exception.UnavailableBookInStockException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,12 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         var errorData = new ErrorDataResponse(ex.getStatus(), ex.getMessage());
         log.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.valueOf(ex.getStatus())).body(errorData);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorDataResponse> handleOrderNotFoundException(OrderNotFoundException ex, WebRequest request) {
+        var errorData = new ErrorDataResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        log.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorData);
     }
 }

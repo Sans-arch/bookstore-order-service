@@ -8,6 +8,7 @@ import com.sansarch.bookstore_order_service.entity.Order;
 import com.sansarch.bookstore_order_service.entity.OrderItem;
 import com.sansarch.bookstore_order_service.entity.OrderStatus;
 import com.sansarch.bookstore_order_service.exception.BookNotFoundException;
+import com.sansarch.bookstore_order_service.exception.OrderNotFoundException;
 import com.sansarch.bookstore_order_service.exception.UnavailableBookInStockException;
 import com.sansarch.bookstore_order_service.http.clients.catalog.CatalogService;
 import com.sansarch.bookstore_order_service.http.clients.catalog.dto.CatalogBookDto;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +36,7 @@ public class OrderService {
         Order order = Order.builder()
                 .userId(input.getUserId())
                 .status(OrderStatus.PENDING)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         checkStock(input.getItems());
@@ -87,5 +90,9 @@ public class OrderService {
                 .toList();
         catalogService.deductStock(itensToDeduct);
         return orderItems;
+    }
+
+    public Order retrieveOrderById(Long id) {
+        return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
     }
 }
