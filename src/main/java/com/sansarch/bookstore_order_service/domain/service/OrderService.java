@@ -1,5 +1,6 @@
 package com.sansarch.bookstore_order_service.domain.service;
 
+import com.sansarch.bookstore_order_service.domain.messaging.MessagePublisher;
 import com.sansarch.bookstore_order_service.infra.dto.DeductStockDto;
 import com.sansarch.bookstore_order_service.infra.dto.PlaceOrderInputDto;
 import com.sansarch.bookstore_order_service.infra.dto.PlaceOrderInputDtoBook;
@@ -31,6 +32,7 @@ import java.util.Objects;
 public class OrderService {
     private OrderRepository orderRepository;
     private CatalogService catalogService;
+    private MessagePublisher messagePublisher;
 
     public PlaceOrderOutputDto placeOrder(PlaceOrderInputDto input) {
         Order order = Order.builder()
