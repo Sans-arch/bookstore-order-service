@@ -23,9 +23,6 @@ public class Order {
     private Long id;
 
     @Column(nullable = false)
-    private Long userId;
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
 

@@ -34,7 +34,6 @@ public class OrderService {
 
     public PlaceOrderOutputDto placeOrder(PlaceOrderInputDto input) {
         Order order = Order.builder()
-                .userId(input.getUserId())
                 .status(OrderStatus.PENDING)
                 .createdAt(LocalDateTime.now())
                 .build();

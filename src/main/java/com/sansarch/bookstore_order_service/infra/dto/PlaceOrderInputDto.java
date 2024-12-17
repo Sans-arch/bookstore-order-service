@@ -10,7 +10,5 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class PlaceOrderInputDto {
-
-    private Long userId;
     private List<PlaceOrderInputDtoBook> items;
 }
