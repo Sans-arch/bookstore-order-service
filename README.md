@@ -24,7 +24,7 @@ The **Order Service** is a core microservice in the Online Bookstore system resp
 - **Lombok**: For reducing boilerplate code.
 - **GitHub Actions**: For CI/CD pipeline.
 - **Feign Client**: For communicating with other services.
-
+- **RabbitMQ**: For asynchronous communication.
 ---
 
 ## API Endpoints
@@ -71,3 +71,5 @@ The **Order Service** is a core microservice in the Online Bookstore system resp
 - Spring Boot
 - Spring Data JPA
 - Spring Web
+- Feign Client
+- RabbitMQ
