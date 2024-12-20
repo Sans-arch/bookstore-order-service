@@ -1,26 +1,29 @@
 package com.sansarch.bookstore_order_service.domain.service;
 
+import com.sansarch.bookstore_order_service.domain.entity.Order;
+import com.sansarch.bookstore_order_service.domain.entity.OrderItem;
+import com.sansarch.bookstore_order_service.domain.entity.OrderStatus;
+import com.sansarch.bookstore_order_service.domain.event.OrderCreatedEvent;
+import com.sansarch.bookstore_order_service.domain.exception.BookNotFoundException;
+import com.sansarch.bookstore_order_service.domain.exception.OrderNotFoundException;
+import com.sansarch.bookstore_order_service.domain.exception.UnavailableBookInStockException;
 import com.sansarch.bookstore_order_service.domain.messaging.MessagePublisher;
+import com.sansarch.bookstore_order_service.domain.repository.OrderRepository;
 import com.sansarch.bookstore_order_service.infra.dto.DeductStockDto;
 import com.sansarch.bookstore_order_service.infra.dto.PlaceOrderInputDto;
 import com.sansarch.bookstore_order_service.infra.dto.PlaceOrderInputDtoBook;
 import com.sansarch.bookstore_order_service.infra.dto.PlaceOrderOutputDto;
-import com.sansarch.bookstore_order_service.domain.entity.Order;
-import com.sansarch.bookstore_order_service.domain.entity.OrderItem;
-import com.sansarch.bookstore_order_service.domain.entity.OrderStatus;
-import com.sansarch.bookstore_order_service.domain.exception.BookNotFoundException;
-import com.sansarch.bookstore_order_service.domain.exception.OrderNotFoundException;
-import com.sansarch.bookstore_order_service.domain.exception.UnavailableBookInStockException;
 import com.sansarch.bookstore_order_service.infra.http.clients.catalog.CatalogService;
 import com.sansarch.bookstore_order_service.infra.http.clients.catalog.dto.CatalogBookDto;
-import com.sansarch.bookstore_order_service.infra.mapper.OrderMapper;
-import com.sansarch.bookstore_order_service.domain.repository.OrderRepository;
+import com.sansarch.bookstore_order_service.infra.messaging.RabbitMQConfiguration;
 import feign.FeignException;
+import feign.RetryableException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,24 +33,50 @@ import java.util.Objects;
 @AllArgsConstructor
 @Service
 public class OrderService {
-    private OrderRepository orderRepository;
     private CatalogService catalogService;
+    private OrderRepository orderRepository;
     private MessagePublisher messagePublisher;
 
     public PlaceOrderOutputDto placeOrder(PlaceOrderInputDto input) {
         Order order = Order.builder()
                 .status(OrderStatus.PENDING)
                 .createdAt(LocalDateTime.now())
+                .totalPrice(BigDecimal.ZERO)
                 .build();
 
-        checkStock(input.getItems());
-        List<OrderItem> orderedBooks = processBooksPurchase(input.getItems());
-        order.addItems(orderedBooks);
-        order.calculateTotalPrice();
-        order.setStatus(OrderStatus.CONFIRMED);
-
         orderRepository.save(order);
-        return OrderMapper.INSTANCE.entityToPlaceOrderOutputDto(order);
+
+        var orderCreatedEvent = new OrderCreatedEvent(order.getId(), OrderStatus.PENDING, input.getItems());
+        messagePublisher.publish(orderCreatedEvent, RabbitMQConfiguration.ORDER_EXCHANGE);
+
+        return PlaceOrderOutputDto.builder()
+                .orderId(order.getId())
+                .status(order.getStatus())
+                .message("Order placed successfully")
+                .build();
+    }
+
+    public void processOrder(OrderCreatedEvent event) {
+        var order = retrieveOrderById(event.getOrderId());
+        try {
+            checkStock(event.getItems());
+            List<OrderItem> orderItems = processBooksPurchase(event.getItems());
+            order.addItems(orderItems);
+            order.calculateTotalPrice();
+            order.setStatus(OrderStatus.CONFIRMED);
+            orderRepository.save(order);
+        } catch (RetryableException e) {
+            // Todo: Criar uma DLQ para tratar esses casos (para não cancelar a ordem já q é um erro de network)
+            log.error("Feign error during order processing: {}: {}", event.getOrderId(), e.getMessage());
+        } catch (Exception e) {
+            log.error("Error processing order {}: {}", event.getOrderId(), e.getMessage());
+            order.setStatus(OrderStatus.CANCELLED);
+            orderRepository.save(order);
+        }
+    }
+
+    public Order retrieveOrderById(Long id) {
+        return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
     }
 
     private void checkStock(List<PlaceOrderInputDtoBook> items) {
@@ -91,9 +120,5 @@ public class OrderService {
                 .toList();
         catalogService.deductStock(itensToDeduct);
         return orderItems;
-    }
-
-    public Order retrieveOrderById(Long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
     }
 }

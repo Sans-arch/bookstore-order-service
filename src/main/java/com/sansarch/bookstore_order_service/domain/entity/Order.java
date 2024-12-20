@@ -32,7 +32,7 @@ public class Order {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "order_id")
     private List<OrderItem> items;
 

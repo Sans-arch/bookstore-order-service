@@ -19,6 +19,5 @@ public interface OrderMapper {
     PlaceOrderOutputDtoBook orderItemToPlaceOrderOutputDtoBook(OrderItem orderItem);
 
     @Mapping(target = "orderId", source = "id")
-    @Mapping(target = "createdAt", source = "createdAt")
     PlaceOrderOutputDto entityToPlaceOrderOutputDto(Order order);
 }
