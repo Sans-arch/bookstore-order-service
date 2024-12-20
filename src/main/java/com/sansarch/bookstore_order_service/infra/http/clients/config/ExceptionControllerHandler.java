@@ -1,8 +1,8 @@
 package com.sansarch.bookstore_order_service.infra.http.clients.config;
 
-import com.sansarch.bookstore_order_service.domain.exception.BookNotFoundException;
-import com.sansarch.bookstore_order_service.domain.exception.OrderNotFoundException;
-import com.sansarch.bookstore_order_service.domain.exception.UnavailableBookInStockException;
+import com.sansarch.bookstore_order_service.domain.order.exception.BookNotFoundException;
+import com.sansarch.bookstore_order_service.domain.order.exception.OrderNotFoundException;
+import com.sansarch.bookstore_order_service.domain.order.exception.UnavailableBookInStockException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
-package com.sansarch.bookstore_order_service.domain.event.consumer;
+package com.sansarch.bookstore_order_service.domain.order.event.consumer;
 
-import com.sansarch.bookstore_order_service.domain.event.OrderCreatedEvent;
-import com.sansarch.bookstore_order_service.domain.service.OrderService;
+import com.sansarch.bookstore_order_service.domain.order.event.OrderCreatedEvent;
+import com.sansarch.bookstore_order_service.application.service.OrderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.domain.event;
+package com.sansarch.bookstore_order_service.domain.order.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

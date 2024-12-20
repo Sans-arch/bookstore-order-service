@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.domain.entity;
+package com.sansarch.bookstore_order_service.domain.order.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

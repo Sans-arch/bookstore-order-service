@@ -1,15 +1,16 @@
-package com.sansarch.bookstore_order_service.infra.dto;
+package com.sansarch.bookstore_order_service.infra.order.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlaceOrderInputDtoBook {
-    private Long bookId;
-    private Integer quantity;
+public class PlaceOrderInputDto {
+    private List<PlaceOrderInputDtoBook> items;
 }

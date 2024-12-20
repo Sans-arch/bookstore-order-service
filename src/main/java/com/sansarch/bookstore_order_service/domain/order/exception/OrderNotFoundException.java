@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.domain.exception;
+package com.sansarch.bookstore_order_service.domain.order.exception;
 
 public class OrderNotFoundException extends RuntimeException {
     public OrderNotFoundException(Long id) {

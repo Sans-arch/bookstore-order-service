@@ -1,9 +1,9 @@
-package com.sansarch.bookstore_order_service.infra.mapper;
+package com.sansarch.bookstore_order_service.application.mapper;
 
-import com.sansarch.bookstore_order_service.infra.dto.PlaceOrderOutputDto;
-import com.sansarch.bookstore_order_service.infra.dto.PlaceOrderOutputDtoBook;
-import com.sansarch.bookstore_order_service.domain.entity.Order;
-import com.sansarch.bookstore_order_service.domain.entity.OrderItem;
+import com.sansarch.bookstore_order_service.infra.order.dto.PlaceOrderOutputDto;
+import com.sansarch.bookstore_order_service.infra.order.dto.PlaceOrderOutputDtoBook;
+import com.sansarch.bookstore_order_service.domain.order.entity.Order;
+import com.sansarch.bookstore_order_service.domain.order.entity.OrderItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

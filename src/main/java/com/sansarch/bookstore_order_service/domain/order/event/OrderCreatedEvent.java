@@ -1,7 +1,7 @@
-package com.sansarch.bookstore_order_service.domain.event;
+package com.sansarch.bookstore_order_service.domain.order.event;
 
-import com.sansarch.bookstore_order_service.domain.entity.OrderStatus;
-import com.sansarch.bookstore_order_service.infra.dto.PlaceOrderInputDtoBook;
+import com.sansarch.bookstore_order_service.domain.order.entity.OrderStatus;
+import com.sansarch.bookstore_order_service.infra.order.dto.PlaceOrderInputDtoBook;
 import lombok.Getter;
 import lombok.ToString;
 
