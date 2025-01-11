@@ -1,9 +1,9 @@
 package com.sansarch.bookstore_order_service.infra.http.controller;
 
-import com.sansarch.bookstore_order_service.infra.order.dto.PlaceOrderInputDto;
-import com.sansarch.bookstore_order_service.infra.order.dto.PlaceOrderOutputDto;
-import com.sansarch.bookstore_order_service.domain.order.entity.Order;
 import com.sansarch.bookstore_order_service.application.service.OrderService;
+import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseInputDto;
+import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseOutputDto;
+import com.sansarch.bookstore_order_service.domain.order.entity.Order;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<PlaceOrderOutputDto> placeOrder(@RequestBody PlaceOrderInputDto input) {
+    public ResponseEntity<PlaceOrderUseCaseOutputDto> placeOrder(@RequestBody PlaceOrderUseCaseInputDto input) {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.placeOrder(input));
     }
 

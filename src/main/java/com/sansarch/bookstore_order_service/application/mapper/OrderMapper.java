@@ -1,6 +1,6 @@
 package com.sansarch.bookstore_order_service.application.mapper;
 
-import com.sansarch.bookstore_order_service.infra.order.dto.PlaceOrderOutputDto;
+import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseOutputDto;
 import com.sansarch.bookstore_order_service.infra.order.dto.PlaceOrderOutputDtoBook;
 import com.sansarch.bookstore_order_service.domain.order.entity.Order;
 import com.sansarch.bookstore_order_service.domain.order.entity.OrderItem;
@@ -19,5 +19,5 @@ public interface OrderMapper {
     PlaceOrderOutputDtoBook orderItemToPlaceOrderOutputDtoBook(OrderItem orderItem);
 
     @Mapping(target = "orderId", source = "id")
-    PlaceOrderOutputDto entityToPlaceOrderOutputDto(Order order);
+    PlaceOrderUseCaseOutputDto entityToPlaceOrderOutputDto(Order order);
 }

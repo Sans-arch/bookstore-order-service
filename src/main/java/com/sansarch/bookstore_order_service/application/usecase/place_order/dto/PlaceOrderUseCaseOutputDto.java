@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.infra.order.dto;
+package com.sansarch.bookstore_order_service.application.usecase.place_order.dto;
 
 import com.sansarch.bookstore_order_service.domain.order.entity.OrderStatus;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-public class PlaceOrderOutputDto {
+public class PlaceOrderUseCaseOutputDto {
     private Long orderId;
     private OrderStatus status;
     private String message;

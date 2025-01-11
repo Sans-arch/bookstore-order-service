@@ -2,12 +2,10 @@ package com.sansarch.bookstore_order_service.infra.http.clients.catalog;
 
 import com.sansarch.bookstore_order_service.infra.http.clients.catalog.dto.CatalogBookDto;
 import com.sansarch.bookstore_order_service.infra.order.dto.DeductStockDto;
+import com.sansarch.bookstore_order_service.infra.order.dto.PlaceOrderInputDtoBook;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,4 +20,7 @@ public interface CatalogService {
 
     @PutMapping("/stock")
     ResponseEntity<Void> deductStock(@RequestBody List<DeductStockDto> input);
+
+    @PostMapping("/stock/check-stock-availability")
+    ResponseEntity<Void> checkStockAvailability(@RequestBody List<PlaceOrderInputDtoBook> input);
 }
