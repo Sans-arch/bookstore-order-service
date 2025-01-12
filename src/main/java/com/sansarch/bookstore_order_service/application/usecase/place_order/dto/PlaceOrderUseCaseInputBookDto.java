@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.infra.order.dto;
+package com.sansarch.bookstore_order_service.application.usecase.place_order.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlaceOrderInputDtoBook {
+public class PlaceOrderUseCaseInputBookDto {
     private Long bookId;
     private Integer quantity;
 }

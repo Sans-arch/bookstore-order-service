@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.infra.order.dto;
+package com.sansarch.bookstore_order_service.application.usecase.place_order.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PlaceOrderOutputDtoBook {
+public class PlaceOrderUseCaseOutputBookDto {
     private Long bookId;
     private Integer quantity;
     private BigDecimal price;
