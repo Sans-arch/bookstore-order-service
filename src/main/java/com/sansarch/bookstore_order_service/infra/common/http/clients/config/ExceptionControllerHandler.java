@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.infra.http.clients.config;
+package com.sansarch.bookstore_order_service.infra.common.http.clients.config;
 
 import com.sansarch.bookstore_order_service.domain.order.exception.BookNotFoundException;
 import com.sansarch.bookstore_order_service.domain.order.exception.OrderNotFoundException;
