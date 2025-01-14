@@ -6,6 +6,8 @@ import com.sansarch.bookstore_order_service.application.usecase.UseCase;
 import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseInputBookDto;
 import com.sansarch.bookstore_order_service.application.usecase.process_order.dto.ProcessOrderUseCaseInputDto;
 import com.sansarch.bookstore_order_service.application.usecase.process_order.dto.ProcessOrderUseCaseOutputDto;
+import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.RetrieveOrderByIdUseCase;
+import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.dto.RetrieveOrderByIdUseCaseInputDto;
 import com.sansarch.bookstore_order_service.domain.order.entity.OrderItem;
 import com.sansarch.bookstore_order_service.domain.order.entity.OrderStatus;
 import com.sansarch.bookstore_order_service.domain.order.exception.BookNotFoundException;
@@ -27,12 +29,13 @@ public class ProcessOrderUseCase implements UseCase<ProcessOrderUseCaseInputDto,
 
     private OrderRepository orderRepository;
     private CatalogService catalogService;
-    private OrderService orderService;
+    private RetrieveOrderByIdUseCase retrieveOrderByIdUseCase;
 
     @Override
     public ProcessOrderUseCaseOutputDto execute(ProcessOrderUseCaseInputDto input) {
         var event = input.getEvent();
-        var order = orderService.retrieveOrderById(event.getOrderId());
+        var order = retrieveOrderByIdUseCase.execute(
+                new RetrieveOrderByIdUseCaseInputDto(event.getOrderId())).getOrder();
 
         try {
             catalogService.checkStockAvailability(event.getItems());
