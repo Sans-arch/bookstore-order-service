@@ -1,39 +1,23 @@
 package com.sansarch.bookstore_order_service.domain.order.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@Entity
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "orders")
+@Builder
+@Data
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status = OrderStatus.PENDING;
-
-    @Column(nullable = false)
+    private OrderStatus status;
     private BigDecimal totalPrice;
-
-    @CreatedDate
     private LocalDateTime createdAt;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "order_id")
     private List<OrderItem> items;
 
     public void addItems(List<OrderItem> items) {

@@ -1,29 +1,18 @@
 package com.sansarch.bookstore_order_service.domain.order.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "order_items")
+@Data
 public class OrderItem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private Long bookId;
-
-    @Column(nullable = false)
     private Integer quantity;
-
-    @Column(nullable = false)
     private BigDecimal price;
 }

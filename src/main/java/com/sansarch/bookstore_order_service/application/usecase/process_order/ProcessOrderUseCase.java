@@ -1,7 +1,6 @@
 package com.sansarch.bookstore_order_service.application.usecase.process_order;
 
-import com.sansarch.bookstore_order_service.application.repository.OrderRepository;
-import com.sansarch.bookstore_order_service.application.service.OrderService;
+import com.sansarch.bookstore_order_service.domain.order.repository.OrderRepository;
 import com.sansarch.bookstore_order_service.application.usecase.UseCase;
 import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseInputBookDto;
 import com.sansarch.bookstore_order_service.application.usecase.process_order.dto.ProcessOrderUseCaseInputDto;
