@@ -10,8 +10,8 @@ import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_b
 import com.sansarch.bookstore_order_service.domain.order.entity.OrderItem;
 import com.sansarch.bookstore_order_service.domain.order.entity.OrderStatus;
 import com.sansarch.bookstore_order_service.domain.order.exception.BookNotFoundException;
-import com.sansarch.bookstore_order_service.infra.http.clients.catalog.CatalogService;
-import com.sansarch.bookstore_order_service.infra.http.clients.catalog.dto.CatalogBookDto;
+import com.sansarch.bookstore_order_service.infra.common.http.clients.catalog.CatalogService;
+import com.sansarch.bookstore_order_service.infra.common.http.clients.catalog.dto.CatalogBookDto;
 import com.sansarch.bookstore_order_service.infra.order.dto.DeductStockDto;
 import feign.RetryableException;
 import lombok.AllArgsConstructor;
@@ -44,7 +44,8 @@ public class ProcessOrderUseCase implements UseCase<ProcessOrderUseCaseInputDto,
             order.calculateTotalPrice();
             order.setStatus(OrderStatus.CONFIRMED);
 
-            orderRepository.save(order);
+            order = orderRepository.save(order);
+            log.info("Order {} processed successfully", order.getId());
         } catch (RetryableException e) {
             // Todo: Criar uma DLQ para tratar esses casos (para não cancelar a ordem já q é um erro de network)
             log.error("Feign error during order processing: {}: {}", event.getOrderId(), e.getMessage());

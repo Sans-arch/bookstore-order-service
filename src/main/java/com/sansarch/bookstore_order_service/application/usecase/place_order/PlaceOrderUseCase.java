@@ -30,7 +30,7 @@ public class PlaceOrderUseCase implements UseCase<PlaceOrderUseCaseInputDto, Pla
                 .totalPrice(BigDecimal.ZERO)
                 .build();
 
-        orderRepository.save(order);
+        order = orderRepository.save(order);
 
         var orderCreatedEvent = new OrderCreatedEvent(order.getId(), OrderStatus.PENDING, input.getItems());
         messagePublisher.publish(orderCreatedEvent, RabbitMQConfiguration.ORDER_EXCHANGE);

@@ -1,6 +1,6 @@
-package com.sansarch.bookstore_order_service.infra.http.clients.catalog;
+package com.sansarch.bookstore_order_service.infra.common.http.clients.catalog;
 
-import com.sansarch.bookstore_order_service.infra.http.clients.catalog.dto.CatalogBookDto;
+import com.sansarch.bookstore_order_service.infra.common.http.clients.catalog.dto.CatalogBookDto;
 import com.sansarch.bookstore_order_service.infra.order.dto.DeductStockDto;
 import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseInputBookDto;
 import org.springframework.cloud.openfeign.FeignClient;

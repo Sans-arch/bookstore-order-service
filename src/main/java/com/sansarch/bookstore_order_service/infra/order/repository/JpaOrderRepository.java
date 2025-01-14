@@ -15,8 +15,9 @@ public class JpaOrderRepository implements OrderRepository {
     private final SpringDataOrderRepository springDataRepository;
 
     @Override
-    public void save(Order order) {
-        springDataRepository.save(OrderMapper.INSTANCE.orderEntityToOrderModel(order));
+    public Order save(Order order) {
+        var persistedOrder = springDataRepository.save(OrderMapper.INSTANCE.orderEntityToOrderModel(order));
+        return OrderMapper.INSTANCE.orderModelToOrderEntity(persistedOrder);
     }
 
     @Override

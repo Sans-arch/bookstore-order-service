@@ -1,9 +1,9 @@
-package com.sansarch.bookstore_order_service.infra.http.controller;
+package com.sansarch.bookstore_order_service.infra.order.http.controller;
 
 import com.sansarch.bookstore_order_service.application.service.OrderService;
 import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseInputDto;
 import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseOutputDto;
-import com.sansarch.bookstore_order_service.domain.order.entity.Order;
+import com.sansarch.bookstore_order_service.infra.order.http.dto.GetOrderResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrder(@PathVariable Long id) {
+    public ResponseEntity<GetOrderResponseDto> getOrder(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.retrieveOrderById(id));
     }
 }
