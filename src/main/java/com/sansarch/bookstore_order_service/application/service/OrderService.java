@@ -8,7 +8,6 @@ import com.sansarch.bookstore_order_service.application.usecase.process_order.Pr
 import com.sansarch.bookstore_order_service.application.usecase.process_order.dto.ProcessOrderUseCaseInputDto;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.RetrieveOrderByIdUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.dto.RetrieveOrderByIdUseCaseInputDto;
-import com.sansarch.bookstore_order_service.domain.order.entity.Order;
 import com.sansarch.bookstore_order_service.domain.order.event.OrderCreatedEvent;
 import com.sansarch.bookstore_order_service.infra.order.http.dto.GetOrderResponseDto;
 import lombok.AllArgsConstructor;
