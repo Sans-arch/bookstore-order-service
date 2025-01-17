@@ -1,6 +1,7 @@
 package com.sansarch.bookstore_order_service.infra.common.http.clients.catalog;
 
 import com.sansarch.bookstore_order_service.infra.common.http.clients.catalog.dto.CatalogBookDto;
+import com.sansarch.bookstore_order_service.infra.common.http.clients.catalog.dto.CheckStockAvailabilityResponseDto;
 import com.sansarch.bookstore_order_service.infra.order.dto.DeductStockDto;
 import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseInputBookDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -13,7 +14,7 @@ import java.util.List;
         name = "catalog-service",
         url = "http://localhost:8080/catalog"
 )
-public interface CatalogService {
+public interface CatalogServiceClient {
 
     @GetMapping("/{id}")
     ResponseEntity<CatalogBookDto> getBookData(@PathVariable Long id);
@@ -22,5 +23,5 @@ public interface CatalogService {
     ResponseEntity<Void> deductStock(@RequestBody List<DeductStockDto> input);
 
     @PostMapping("/stock/check-stock-availability")
-    ResponseEntity<Void> checkStockAvailability(@RequestBody List<PlaceOrderUseCaseInputBookDto> input);
+    ResponseEntity<CheckStockAvailabilityResponseDto> checkStockAvailability(@RequestBody List<PlaceOrderUseCaseInputBookDto> input);
 }
