@@ -6,10 +6,16 @@ import com.sansarch.bookstore_order_service.application.usecase.check_stock.dto.
 import com.sansarch.bookstore_order_service.application.usecase.place_order.PlaceOrderUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.process_created_order.ProcessCreatedOrderUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.process_created_order.dto.ProcessCreatedOrderUseCaseInputDto;
+import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_confirmed.ProcessOrderStockConfirmed;
+import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_confirmed.dto.ProcessOrderStockConfirmedInputDto;
+import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_failed.ProcessOrderStockFailed;
+import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_failed.dto.ProcessOrderStockFailedInputDto;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.RetrieveOrderByIdUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.dto.RetrieveOrderByIdUseCaseInputDto;
 import com.sansarch.bookstore_order_service.domain.order.event.OrderCreatedEvent;
 import com.sansarch.bookstore_order_service.domain.order.event.StockCheckEvent;
+import com.sansarch.bookstore_order_service.domain.order.event.order_stock_confirmed.OrderStockConfirmedEvent;
+import com.sansarch.bookstore_order_service.domain.order.event.order_stock_failed.OrderStockFailedEvent;
 import com.sansarch.bookstore_order_service.infra.order.http.dto.get_order.GetOrderResponseDto;
 import com.sansarch.bookstore_order_service.infra.order.http.dto.place_order.PlaceOrderRequestDto;
 import com.sansarch.bookstore_order_service.infra.order.http.dto.place_order.PlaceOrderResponseDto;
@@ -23,9 +29,11 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
     private PlaceOrderUseCase placeOrderUseCase;
-    private ProcessCreatedOrderUseCase processCreatedOrderUseCase;
     private RetrieveOrderByIdUseCase retrieveOrderByIdUseCase;
+    private ProcessCreatedOrderUseCase processCreatedOrderUseCase;
     private CheckStockUseCase checkStockUseCase;
+    private ProcessOrderStockConfirmed processOrderStockConfirmed;
+    private ProcessOrderStockFailed processOrderStockFailed;
 
     public PlaceOrderResponseDto placeOrder(PlaceOrderRequestDto input) {
         var output = placeOrderUseCase.execute(
@@ -44,6 +52,14 @@ public class OrderService {
 
     public void checkStockAvailability(StockCheckEvent event) {
         checkStockUseCase.execute(new CheckStockUseCaseInputDto(event));
+    }
+
+    public void processOrderWithConfirmedStock(OrderStockConfirmedEvent event) {
+        processOrderStockConfirmed.execute(new ProcessOrderStockConfirmedInputDto(event));
+    }
+
+    public void processOrderWithFailedStock(OrderStockFailedEvent event) {
+        processOrderStockFailed.execute(new ProcessOrderStockFailedInputDto(event));
     }
 
     public GetOrderResponseDto retrieveOrderById(Long id) {
