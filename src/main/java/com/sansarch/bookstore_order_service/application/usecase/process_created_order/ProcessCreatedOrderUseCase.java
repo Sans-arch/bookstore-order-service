@@ -1,67 +1,58 @@
-package com.sansarch.bookstore_order_service.application.usecase.process_order;
+package com.sansarch.bookstore_order_service.application.usecase.process_created_order;
 
-import com.sansarch.bookstore_order_service.domain.order.repository.OrderRepository;
 import com.sansarch.bookstore_order_service.application.usecase.UseCase;
 import com.sansarch.bookstore_order_service.application.usecase.place_order.dto.PlaceOrderUseCaseInputBookDto;
-import com.sansarch.bookstore_order_service.application.usecase.process_order.dto.ProcessOrderUseCaseInputDto;
-import com.sansarch.bookstore_order_service.application.usecase.process_order.dto.ProcessOrderUseCaseOutputDto;
+import com.sansarch.bookstore_order_service.application.usecase.process_created_order.dto.ProcessCreatedOrderUseCaseInputDto;
+import com.sansarch.bookstore_order_service.application.usecase.process_created_order.dto.ProcessCreatedOrderUseCaseOutputDto;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.RetrieveOrderByIdUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.dto.RetrieveOrderByIdUseCaseInputDto;
+import com.sansarch.bookstore_order_service.domain.common.messaging.MessagePublisher;
 import com.sansarch.bookstore_order_service.domain.order.entity.OrderItem;
-import com.sansarch.bookstore_order_service.domain.order.entity.OrderStatus;
+import com.sansarch.bookstore_order_service.domain.order.event.StockCheckEvent;
 import com.sansarch.bookstore_order_service.domain.order.exception.BookNotFoundException;
-import com.sansarch.bookstore_order_service.infra.common.http.clients.catalog.CatalogService;
+import com.sansarch.bookstore_order_service.infra.common.http.clients.catalog.CatalogServiceClient;
 import com.sansarch.bookstore_order_service.infra.common.http.clients.catalog.dto.CatalogBookDto;
 import com.sansarch.bookstore_order_service.infra.order.dto.DeductStockDto;
-import feign.RetryableException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sansarch.bookstore_order_service.infra.messaging.RabbitMQConfiguration.ORDER_EXCHANGE;
+import static com.sansarch.bookstore_order_service.infra.messaging.RabbitMQConfiguration.STOCK_CHECK_QUEUE;
+
 @Slf4j
 @AllArgsConstructor
 @Component
-public class ProcessOrderUseCase implements UseCase<ProcessOrderUseCaseInputDto, ProcessOrderUseCaseOutputDto> {
+public class ProcessCreatedOrderUseCase implements UseCase<ProcessCreatedOrderUseCaseInputDto,
+        ProcessCreatedOrderUseCaseOutputDto> {
 
-    private OrderRepository orderRepository;
-    private CatalogService catalogService;
+    private MessagePublisher messagePublisher;
+    private CatalogServiceClient catalogServiceClient;
     private RetrieveOrderByIdUseCase retrieveOrderByIdUseCase;
 
     @Override
-    public ProcessOrderUseCaseOutputDto execute(ProcessOrderUseCaseInputDto input) {
+    @Transactional
+    public ProcessCreatedOrderUseCaseOutputDto execute(ProcessCreatedOrderUseCaseInputDto input) {
         var event = input.getEvent();
+        log.info("Processing order with ID: {}", event.getOrderId());
+
         var order = retrieveOrderByIdUseCase.execute(
                 new RetrieveOrderByIdUseCaseInputDto(event.getOrderId())).getOrder();
 
-        try {
-            catalogService.checkStockAvailability(event.getItems());
+        StockCheckEvent stockCheckEvent = new StockCheckEvent(order.getId(), event.getItems());
+        messagePublisher.publish(stockCheckEvent, ORDER_EXCHANGE, "stock.check");
 
-            List<OrderItem> orderItems = processBooksPurchase(event.getItems());
-            order.addItems(orderItems);
-            order.calculateTotalPrice();
-            order.setStatus(OrderStatus.CONFIRMED);
-
-            order = orderRepository.save(order);
-            log.info("Order {} processed successfully", order.getId());
-        } catch (RetryableException e) {
-            // Todo: Criar uma DLQ para tratar esses casos (para não cancelar a ordem já q é um erro de network)
-            log.error("Feign error during order processing: {}: {}", event.getOrderId(), e.getMessage());
-        } catch (Exception e) {
-            log.error("Error processing order {}: {}", event.getOrderId(), e.getMessage());
-            order.setStatus(OrderStatus.CANCELLED);
-            orderRepository.save(order);
-        }
-
-        return new ProcessOrderUseCaseOutputDto();
+        return new ProcessCreatedOrderUseCaseOutputDto();
     }
 
     private List<OrderItem> processBooksPurchase(List<PlaceOrderUseCaseInputBookDto> items) {
         List<OrderItem> orderItems = new ArrayList<>();
         for (PlaceOrderUseCaseInputBookDto item : items) {
-            var response = catalogService.getBookData(item.getBookId());
+            var response = catalogServiceClient.getBookData(item.getBookId());
             CatalogBookDto bookData = response.getBody();
 
             if (bookData == null) {
@@ -81,7 +72,7 @@ public class ProcessOrderUseCase implements UseCase<ProcessOrderUseCaseInputDto,
                 .map(item -> new DeductStockDto(item.getBookId(), item.getQuantity()))
                 .toList();
 
-        catalogService.deductStock(itemsToDeduct);
+        catalogServiceClient.deductStock(itemsToDeduct);
         return orderItems;
     }
 }
