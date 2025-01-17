@@ -1,9 +1,6 @@
 package com.sansarch.bookstore_order_service.infra.messaging;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -19,6 +16,9 @@ public class RabbitMQConfiguration {
 
     public static final String ORDER_EXCHANGE = "order-exchange";
     public static final String ORDER_CREATED_QUEUE = "order-created";
+    public static final String STOCK_CHECK_QUEUE = "stock-check";
+    public static final String STOCK_CHECK_CONFIRMED_QUEUE = "stock-check-confirmed";
+    public static final String STOCK_CHECK_FAILED_QUEUE = "stock-check-failed";
 
     @Bean
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
@@ -44,8 +44,8 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public FanoutExchange orderExchange() {
-        return new FanoutExchange(ORDER_EXCHANGE);
+    public TopicExchange orderExchange() {
+        return new TopicExchange(ORDER_EXCHANGE);
     }
 
     @Bean
@@ -54,7 +54,39 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public Binding bindingOrderCreatedQueueToOrderExchange(Queue orderCreatedQueue, FanoutExchange orderExchange) {
-        return BindingBuilder.bind(orderCreatedQueue).to(orderExchange);
+    public Queue stockCheckQueue() {
+        return new Queue(STOCK_CHECK_QUEUE, true);
+    }
+
+    @Bean
+    public Queue stockCheckConfirmedQueue() {
+        return new Queue(STOCK_CHECK_CONFIRMED_QUEUE, true);
+    }
+
+    @Bean
+    public Queue stockCheckFailedQueue() {
+        return new Queue(STOCK_CHECK_FAILED_QUEUE, true);
+    }
+
+    @Bean
+    public Binding bindingOrderCreatedQueueToOrderExchange(Queue orderCreatedQueue, TopicExchange orderExchange) {
+        return BindingBuilder.bind(orderCreatedQueue).to(orderExchange).with("order.created");
+    }
+
+    @Bean
+    public Binding bindingStockCheckQueueToOrderExchange(Queue stockCheckQueue, TopicExchange orderExchange) {
+        return BindingBuilder.bind(stockCheckQueue).to(orderExchange).with("stock.check");
+    }
+
+    @Bean
+    public Binding bindingStockCheckConfirmedQueueToOrderExchange(Queue stockCheckConfirmedQueue,
+                                                                  TopicExchange orderExchange) {
+        return BindingBuilder.bind(stockCheckConfirmedQueue).to(orderExchange).with("stock.check.confirmed");
+    }
+
+    @Bean
+    public Binding bindingStockCheckFailedQueueToOrderExchange(Queue stockCheckFailedQueue,
+                                                              TopicExchange orderExchange) {
+        return BindingBuilder.bind(stockCheckFailedQueue).to(orderExchange).with("stock.check.failed");
     }
 }
