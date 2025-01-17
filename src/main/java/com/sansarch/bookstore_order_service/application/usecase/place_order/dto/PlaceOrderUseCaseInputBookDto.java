@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PlaceOrderUseCaseInputBookDto {
     private Long bookId;
-    private Integer quantity;
+    private Long quantity;
 }

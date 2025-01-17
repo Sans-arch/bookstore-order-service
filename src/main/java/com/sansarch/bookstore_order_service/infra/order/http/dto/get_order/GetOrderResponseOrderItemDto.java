@@ -1,4 +1,4 @@
-package com.sansarch.bookstore_order_service.infra.order.http.dto;
+package com.sansarch.bookstore_order_service.infra.order.http.dto.get_order;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -13,6 +13,6 @@ public class OrderItem {
 
     private Long id;
     private Long bookId;
-    private Integer quantity;
+    private Long quantity;
     private BigDecimal price;
 }

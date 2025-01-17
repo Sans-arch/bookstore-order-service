@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DeductStockDto {
     private Long bookId;
-    private Integer quantity;
+    private Long quantity;
 }
