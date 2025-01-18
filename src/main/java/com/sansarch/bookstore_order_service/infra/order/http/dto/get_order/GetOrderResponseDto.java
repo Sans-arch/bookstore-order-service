@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,6 +17,7 @@ public class GetOrderResponseDto {
     private Long id;
     private OrderStatus status;
     private BigDecimal totalPrice;
-    private String createdAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private List<GetOrderResponseOrderItemDto> items;
 }

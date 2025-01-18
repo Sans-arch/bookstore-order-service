@@ -7,4 +7,5 @@ import lombok.Data;
 @Data
 public class OrderStockConfirmedBook {
     private Long bookId;
+    private Long quantity;
 }

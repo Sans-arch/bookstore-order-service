@@ -31,6 +31,7 @@ public class PlaceOrderUseCase implements UseCase<PlaceOrderUseCaseInputDto, Pla
         Order order = Order.builder()
                 .status(OrderStatus.PENDING)
                 .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .totalPrice(BigDecimal.ZERO)
                 .build();
         order = orderRepository.save(order);

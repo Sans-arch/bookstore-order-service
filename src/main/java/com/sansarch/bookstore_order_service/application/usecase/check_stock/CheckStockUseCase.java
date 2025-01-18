@@ -38,7 +38,7 @@ public class CheckStockUseCase implements UseCase<CheckStockUseCaseInputDto, Che
             log.info("Stock check passed for order {}: ", event.getOrderId());
 
             List<OrderStockConfirmedBook> items = event.getItems().stream()
-                    .map(item -> new OrderStockConfirmedBook(item.getBookId())).toList();
+                    .map(item -> new OrderStockConfirmedBook(item.getBookId(), item.getQuantity())).toList();
             OrderStockConfirmedEvent orderStockConfirmedEvent = new OrderStockConfirmedEvent(event.getOrderId(), items);
             messagePublisher.publish(orderStockConfirmedEvent, ORDER_EXCHANGE, "stock.check.confirmed");
         } else {

@@ -6,7 +6,7 @@ import com.sansarch.bookstore_order_service.application.usecase.check_stock.dto.
 import com.sansarch.bookstore_order_service.application.usecase.place_order.PlaceOrderUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.process_created_order.ProcessCreatedOrderUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.process_created_order.dto.ProcessCreatedOrderUseCaseInputDto;
-import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_confirmed.ProcessOrderStockConfirmed;
+import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_confirmed.ProcessOrderStockConfirmedUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_confirmed.dto.ProcessOrderStockConfirmedInputDto;
 import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_failed.ProcessOrderStockFailed;
 import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_failed.dto.ProcessOrderStockFailedInputDto;
@@ -32,7 +32,7 @@ public class OrderService {
     private RetrieveOrderByIdUseCase retrieveOrderByIdUseCase;
     private ProcessCreatedOrderUseCase processCreatedOrderUseCase;
     private CheckStockUseCase checkStockUseCase;
-    private ProcessOrderStockConfirmed processOrderStockConfirmed;
+    private ProcessOrderStockConfirmedUseCase processOrderStockConfirmedUseCase;
     private ProcessOrderStockFailed processOrderStockFailed;
 
     public PlaceOrderResponseDto placeOrder(PlaceOrderRequestDto input) {
@@ -55,7 +55,7 @@ public class OrderService {
     }
 
     public void processOrderWithConfirmedStock(OrderStockConfirmedEvent event) {
-        processOrderStockConfirmed.execute(new ProcessOrderStockConfirmedInputDto(event));
+        processOrderStockConfirmedUseCase.execute(new ProcessOrderStockConfirmedInputDto(event));
     }
 
     public void processOrderWithFailedStock(OrderStockFailedEvent event) {
@@ -69,7 +69,8 @@ public class OrderService {
                 .id(order.getId())
                 .status(order.getStatus())
                 .totalPrice(order.getTotalPrice())
-                .createdAt(order.getCreatedAt().toString())
+                .createdAt(order.getCreatedAt())
+                .updatedAt(order.getUpdatedAt())
                 .items(OrderMapper.INSTANCE.orderItemListToGetOrderResponseOrderItemDtoList(order.getItems()))
                 .build();
     }
