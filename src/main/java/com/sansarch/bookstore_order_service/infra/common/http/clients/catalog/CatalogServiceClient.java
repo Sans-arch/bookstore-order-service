@@ -10,18 +10,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(
-        name = "catalog-service",
-        url = "http://localhost:8080/catalog"
-)
+@FeignClient(name = "bookstore-catalog-service")
 public interface CatalogServiceClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("/catalog/{id}")
     ResponseEntity<CatalogBookDto> getBookData(@PathVariable Long id);
 
-    @PutMapping("/stock")
+    @PutMapping("/catalog/stock")
     ResponseEntity<Void> deductStock(@RequestBody List<DeductStockDto> input);
 
-    @PostMapping("/stock/check-stock-availability")
+    @PostMapping("/catalog/stock/check-stock-availability")
     ResponseEntity<CheckStockAvailabilityResponseDto> checkStockAvailability(@RequestBody List<PlaceOrderUseCaseInputBookDto> input);
 }
