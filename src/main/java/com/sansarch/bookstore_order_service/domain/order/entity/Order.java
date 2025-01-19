@@ -42,5 +42,6 @@ public class Order {
 
     public void cancelOrder() {
         status = OrderStatus.CANCELLED;
+        updatedAt = LocalDateTime.now();
     }
 }

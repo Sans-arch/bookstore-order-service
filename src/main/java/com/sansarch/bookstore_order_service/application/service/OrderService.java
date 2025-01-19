@@ -8,7 +8,7 @@ import com.sansarch.bookstore_order_service.application.usecase.process_created_
 import com.sansarch.bookstore_order_service.application.usecase.process_created_order.dto.ProcessCreatedOrderUseCaseInputDto;
 import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_confirmed.ProcessOrderStockConfirmedUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_confirmed.dto.ProcessOrderStockConfirmedInputDto;
-import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_failed.ProcessOrderStockFailed;
+import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_failed.ProcessOrderStockFailedUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_failed.dto.ProcessOrderStockFailedInputDto;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.RetrieveOrderByIdUseCase;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.dto.RetrieveOrderByIdUseCaseInputDto;
@@ -33,7 +33,7 @@ public class OrderService {
     private ProcessCreatedOrderUseCase processCreatedOrderUseCase;
     private CheckStockUseCase checkStockUseCase;
     private ProcessOrderStockConfirmedUseCase processOrderStockConfirmedUseCase;
-    private ProcessOrderStockFailed processOrderStockFailed;
+    private ProcessOrderStockFailedUseCase processOrderStockFailedUseCase;
 
     public PlaceOrderResponseDto placeOrder(PlaceOrderRequestDto input) {
         var output = placeOrderUseCase.execute(
@@ -59,7 +59,7 @@ public class OrderService {
     }
 
     public void processOrderWithFailedStock(OrderStockFailedEvent event) {
-        processOrderStockFailed.execute(new ProcessOrderStockFailedInputDto(event));
+        processOrderStockFailedUseCase.execute(new ProcessOrderStockFailedInputDto(event));
     }
 
     public GetOrderResponseDto retrieveOrderById(Long id) {
