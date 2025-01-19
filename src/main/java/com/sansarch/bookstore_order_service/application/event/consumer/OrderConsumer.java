@@ -1,8 +1,8 @@
 package com.sansarch.bookstore_order_service.application.event.consumer;
 
 import com.sansarch.bookstore_order_service.application.service.OrderService;
-import com.sansarch.bookstore_order_service.domain.order.event.StockCheckEvent;
 import com.sansarch.bookstore_order_service.domain.order.event.OrderCreatedEvent;
+import com.sansarch.bookstore_order_service.domain.order.event.StockCheckEvent;
 import com.sansarch.bookstore_order_service.domain.order.event.order_stock_confirmed.OrderStockConfirmedEvent;
 import com.sansarch.bookstore_order_service.domain.order.event.order_stock_failed.OrderStockFailedEvent;
 import lombok.AllArgsConstructor;

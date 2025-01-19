@@ -1,10 +1,10 @@
 package com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id;
 
-import com.sansarch.bookstore_order_service.domain.order.repository.OrderRepository;
 import com.sansarch.bookstore_order_service.application.usecase.UseCase;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.dto.RetrieveOrderByIdUseCaseInputDto;
 import com.sansarch.bookstore_order_service.application.usecase.retrieve_order_by_id.dto.RetrieveOrderByIdUseCaseOutputDto;
 import com.sansarch.bookstore_order_service.domain.order.exception.OrderNotFoundException;
+import com.sansarch.bookstore_order_service.domain.order.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

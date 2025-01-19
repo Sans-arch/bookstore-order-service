@@ -4,17 +4,12 @@ import com.sansarch.bookstore_order_service.application.usecase.UseCase;
 import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_failed.dto.ProcessOrderStockFailedInputDto;
 import com.sansarch.bookstore_order_service.application.usecase.process_order_stock_failed.dto.ProcessOrderStockFailedOutputDto;
 import com.sansarch.bookstore_order_service.domain.order.entity.Order;
-import com.sansarch.bookstore_order_service.domain.order.entity.OrderItem;
-import com.sansarch.bookstore_order_service.domain.order.event.order_stock_confirmed.OrderStockConfirmedEvent;
 import com.sansarch.bookstore_order_service.domain.order.event.order_stock_failed.OrderStockFailedEvent;
 import com.sansarch.bookstore_order_service.domain.order.exception.OrderNotFoundException;
 import com.sansarch.bookstore_order_service.domain.order.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
